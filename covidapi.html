@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>covid tracker</title>
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 600px;
+            height: 700px;
+            margin: auto;
+            margin-top: 50px; 
+            background-color: rgb(23, 19, 223);
+        }
+.heading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 590px;
+    background-color: lightgrey;
+    font-family:cursive;
+    font-size: 25px;
+    border-radius: 25%;
+}
+.datecontainer{
+    font-size: 14px;
+}
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            
+            width: 500px;
+            height: 600px;
+           
+            padding: 45px;
+        }
+        .box{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            width: 100%;
+            height: 150px;
+            margin: 10px;
+            background-color: lightgrey;
+            font-size: 40px;
+            border-radius: 2%;
+            
+            
+        }
+        #data3{
+            color: #84c425;
+        }
+        #data1{
+            color: grey;
+        }
+        #data2{
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div class="heading">Covid cases in India 
+    <div class="datecontainer">last updated: <span id="date"></span></div>
+</div>
+<div class="container">
+    <div class=" box box1">Total no. of cases
+        <div id="data1"></div>
+    </div>
+    <div class=" box box2">total deaths
+        <div id="data2"><span></span></div>
+    </div>
+    <div class=" box box3">total recovered
+        <div id="data3"><span></span></div>
+    </div>
+
+</div>
+
+
+
+    <script>
+      getData();
+      var a=setInterval(getData,5000);
+    async function getData(){
+       const response =await fetch('https://api.covid19api.com/summary');
+       const data =await response.json();
+        console.log(data.Countries[76]);
+        document.getElementById('data1').innerText=data.Countries[76].TotalConfirmed
+        document.getElementById('data2').innerText=data.Countries[76].TotalDeaths
+        document.getElementById('data3').innerText=data.Countries[76].TotalRecovered
+        const options={weekend: 'long',year:'numeric',month:'long',day:'numeric'}
+        a= new Date();
+     hr=a.getHours();
+       min=a.getMinutes();
+    sec=a.getSeconds();
+    
+    if(sec.toString().length==1)
+    {
+        sec="0"+sec;
+    }
+    if(min.toString().length==1)
+    {
+        min="0"+min;
+    }
+    if(hr.toString().length==1)
+    {
+        hr="0"+hr;
+    }
+
+    time=hr+":"+min+":"+sec;
+    dy=a.toLocaleDateString(undefined,options);
+    document.getElementById('date').innerText=time + " " + dy;
+    }
+    </script>
+</body>
+</html>
